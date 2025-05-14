@@ -1,9 +1,62 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
 <body>
+    <div class="container text-center">
+        <h2>Worksheets</h2>
+        <button class="btn btn-primary" onclick="morningWorksheet()">Morning Worksheet</button>
+        <button class="btn btn-warning" onclick="eveningWorksheet()">Evening Worksheet</button>
+        <p id="demo"></p>
+    </div>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+    <script>
+        function morningWorksheet() {
+            var today = new Date();
+            var day = today.getDay();
+            if (day === 0) {
+                window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSe01RN15-2AIQM-BSs0PGvmlho6zN2rUKeDCise6U-JRPv1nA/viewform?usp=sharing");
+            } else {
+                document.getElementById("demo").innerHTML = "Worksheets are only available on Mondays.";
+            }
+        }
 
+        function eveningWorksheet() {
+            var today = new Date();
+            var day = today.getDay();
+            if (day === 0) {
+                window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSforpmUwL8G5x9EorlDd6twIaUUUz6LhH8oJkc30vVC5muy_A/viewform?usp=sharing");
+            } else {
+                document.getElementById("demo").innerHTML = "Worksheets are only available on Mondays.";
+            }
+        }
+    </script>
 </body>
+
 </html>
