@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,7 @@
         body {
             font-family: Arial, sans-serif;
         }
-
+        
         .container {
             max-width: 400px;
             margin: 40px auto;
@@ -20,14 +19,13 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
+        
         .btn {
             width: 100%;
             margin-bottom: 20px;
         }
     </style>
 </head>
-
 <body>
     <div class="container text-center">
         <h2>Worksheets</h2>
@@ -36,39 +34,48 @@
         <p id="demo"></p>
     </div>
     <script>
-        function morningWorksheet() {
+        const morningLinks = {
+            1: "https://docs.google.com/forms/d/e/1FAIpQLSe01RN15-2AIQM-BSs0PGvmlho6zN2rUKeDCise6U-JRPv1nA/viewform?usp=sharing",
+            2: "https://docs.google.com/forms/d/e/1FAIpQLSdSdnZ98ywMM36fxbhcfuZYW54E_KP_U4dqqppoM-f8i53rSA/viewform?usp=sharing",
+            3: "https://docs.google.com/forms/d/e/1FAIpQLSdzVnRcUDjlIT3KLiSOWljy9K4HJyCCB9bxLneHSOAwCrg1ZA/viewform?usp=sharing"
+        };
+        
+        const eveningLinks = {
+            1: "https://docs.google.com/forms/d/e/1FAIpQLSforpmUwL8G5x9EorlDd6twIaUUUz6LhH8oJkc30vVC5muy_A/viewform?usp=sharing",
+            2: "https://docs.google.com/forms/d/e/1FAIpQLSeQ0wncRtRHVsqEds1u0lvVObflrPVp_gnEFpDoLf29j074mg/viewform?usp=sharing",
+            3: "https://docs.google.com/forms/d/e/1FAIpQLSdLZ91ImohiEXJXR5QbaI-IUrFV-8hTuLKIECt1qI0LYElRJw/viewform?usp=sharing"
+        };
+        
+        function getWorksheetDay() {
             var today = new Date();
             var day = today.getDay();
-            if (day === 1) {
-                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSe01RN15-2AIQM-BSs0PGvmlho6zN2rUKeDCise6U-JRPv1nA/viewform?usp=sharing";
+            var hours = today.getHours();
+            if (hours >= 2) {
+                return day;
+            } else if (hours < 2 && day === 0) {
+                return 6; // Sunday
+            } else if (hours < 2) {
+                return day - 1;
             }
-            else if (day === 2) {
-                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdSdnZ98ywMM36fxbhcfuZYW54E_KP_U4dqqppoM-f8i53rSA/viewform?usp=sharing";
-            }
-            else if (day === 3) {
-                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdzVnRcUDjlIT3KLiSOWljy9K4HJyCCB9bxLneHSOAwCrg1ZA/viewform?usp=sharing";
-            }
-            else {
+        }
+        
+        function morningWorksheet() {
+            var day = getWorksheetDay();
+            if (day in morningLinks) {
+                window.location.href = morningLinks[day];
+            } else {
                 alert("Worksheets not available");
             }
         }
+        
         function eveningWorksheet() {
-            var today = new Date();
-            var day = today.getDay();
-            if (day === 1) {
-                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSforpmUwL8G5x9EorlDd6twIaUUUz6LhH8oJkc30vVC5muy_A/viewform?usp=sharing";
-            }
-            else if (day === 2) {
-                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeQ0wncRtRHVsqEds1u0lvVObflrPVp_gnEFpDoLf29j074mg/viewform?usp=sharing";
-            }
-            else if (day ==3 ) {
-                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdLZ91ImohiEXJXR5QbaI-IUrFV-8hTuLKIECt1qI0LYElRJw/viewform?usp=sharing";
-            }
-            else {
+            var day = getWorksheetDay();
+            if (day in eveningLinks) {
+                window.location.href = eveningLinks[day];
+            } else {
                 alert("Worksheets not available");
             }
         }
     </script>
 </body>
-
 </html>
