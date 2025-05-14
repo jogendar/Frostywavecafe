@@ -40,9 +40,13 @@
         function morningWorksheet() {
             var today = new Date();
             var day = today.getDay();
-            if (day === 2) {
+            if (day === 1) {
                 window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSe01RN15-2AIQM-BSs0PGvmlho6zN2rUKeDCise6U-JRPv1nA/viewform?usp=sharing");
-            } else {
+            }
+            else if (day === 2) {
+                window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSdSdnZ98ywMM36fxbhcfuZYW54E_KP_U4dqqppoM-f8i53rSA/viewform?usp=sharing");
+            }
+            else {
                 document.getElementById("demo").innerHTML = "Worksheets are only available on Mondays.";
             }
         }
@@ -52,7 +56,11 @@
             var day = today.getDay();
             if (day === 1) {
                 window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSforpmUwL8G5x9EorlDd6twIaUUUz6LhH8oJkc30vVC5muy_A/viewform?usp=sharing");
-            } else {
+            }
+            else if (day === 2) {
+                window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSeQ0wncRtRHVsqEds1u0lvVObflrPVp_gnEFpDoLf29j074mg/viewform?usp=sharing");
+            }
+            else {
                 document.getElementById("demo").innerHTML = "Worksheets are only available on Mondays.";
             }
         }
