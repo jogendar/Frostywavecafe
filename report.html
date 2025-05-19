@@ -1,0 +1,414 @@
+<!-- Define the document type and HTML structure -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Set the character encoding and viewport settings -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Define custom styles for the page -->
+    <style>
+        /* Set the font family and margins for the body */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style the container element */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Style the buttons */
+        .btn {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* Style the data table */
+        .data-table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Style the table header */
+        .data-table thead {
+            position: sticky;
+            top: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Style the table cells */
+        .data-table th,
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        /* Style the table header cells */
+        .data-table th {
+            background-color: #f0f0f0;
+        }
+
+        /* Style the thumbnail images */
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Style the modal window */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Style the modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* Style the close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Style the close button on hover and focus */
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Style the red and yellow cells */
+        .red {
+            background-color: #FF0000;
+            color: #FFFFFF;
+        }
+
+        .yellow {
+            background-color: #FFFF00;
+            color: #000000;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Create a container element to hold the page content -->
+    <div class="container text-center">
+        <!-- Display a heading -->
+        <h2> Daily report </h2>
+        <table class="data-table" class="table table-striped">
+            <!-- Define the table header -->
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Header</th>
+                    <th style="width: 50%;">Value</th>
+                    <th style="width: 30%;">Last updated</th>
+                </tr>
+            </thead>
+            <!-- Define the table body -->
+            <tbody id="daily-report-body">
+            </tbody>
+        </table>
+        <br>
+        <!-- Display a heading -->
+        <h2> Evening report </h2>
+        <table class="data-table" class="table table-striped">
+            <!-- Define the table header -->
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Header</th>
+                    <th style="width: 50%;">Value</th>
+                    <th style="width: 30%;">Last updated</th>
+                </tr>
+            </thead>
+            <!-- Define the table body -->
+            <tbody id="evening-report-body">
+            </tbody>
+        </table>
+        <br>
+        <!-- Display a heading -->
+        <h2> Weekly report </h2>
+        <!-- Create a table to display the data -->
+        <table class="data-table" class="table table-striped">
+            <!-- Define the table header -->
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Header</th>
+                    <th style="width: 50%;">Value</th>
+                    <th style="width: 30%;">Last updated</th>
+                </tr>
+            </thead>
+            <!-- Define the table body -->
+            <tbody id="weekly-report-body">
+            </tbody>
+        </table>
+    </div>
+    <!-- Define the JavaScript code for the page -->
+    <script>
+        // Define the spreadsheet IDs and ranges
+        const spreadsheets = [
+            {
+                //sunday
+                id: "1qy_IVPcqw13Yc8Rs5UEaQxcuY-UrpZt1WMs7Ayx-vKA",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //monday
+                id: "1skbQoZ4Msew2f3mNTlmJVrkY-SLVso-v8lgkWB-nUbs",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //tuesday
+                id: "1BlvOFBMQXv9r6D472GOnDDwSmpUgrr68sAB9bAYOUhw",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //wednesday
+                id: "15ScH5W0Ygb55J551UMwwJhP85xslpGbeYLJ35mjuPto",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //Thursday
+                id: "1I07yNcr9rb4M4cs72OYkNj4DIQ0LMTGxAZwq5xJjgBU",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //Friday
+                id: "1ohZU7FS_yp66iN_rLIeJafQ4HdlAQK_xB3XwmHqSLQQ",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //saturday
+                id: "1BvdeZ9rBUOn_Uvy78_j3CFdOlNLYHYSm7X1kmBvgWZk",
+                range: 'Sheet1!A1:AZ1000'
+            }
+        ];
+        const eveningSpreadsheets = [
+            {
+                //sunday
+                id: "1rSLelQ1Nw8RIuw7_yq-qE1tj6UnHbzyL_l1qKQVh4tA",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //monday
+                id: "1rSLelQ1Nw8RIuw7_yq-qE1tj6UnHbzyL_l1qKQVh4tA",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //tuesday
+                id: "1rSLelQ1Nw8RIuw7_yq-qE1tj6UnHbzyL_l1qKQVh4tA",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //wednesday
+                id: "1rSLelQ1Nw8RIuw7_yq-qE1tj6UnHbzyL_l1qKQVh4tA",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //Thursday
+                id: "1rSLelQ1Nw8RIuw7_yq-qE1tj6UnHbzyL_l1qKQVh4tA",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //Friday
+                id: "1rSLelQ1Nw8RIuw7_yq-qE1tj6UnHbzyL_l1qKQVh4tA",
+                range: 'Sheet1!A1:AZ1000'
+            },
+            {
+                //saturday
+                id: "1rSLelQ1Nw8RIuw7_yq-qE1tj6UnHbzyL_l1qKQVh4tA",
+                range: 'Sheet1!A1:AZ1000'
+            }
+        ];
+        function getWorksheetDay() {
+            var today = new Date();
+            var day = today.getDay();
+            var hours = today.getHours();
+            if (hours >= 2) {
+                return day;
+            } else if (hours < 2 && day === 0) {
+                return 6; // Sunday
+            } else if (hours < 2) {
+                return day - 1;
+            }
+        }
+        /*
+        * Define a function to read the spreadsheet
+        * This function fetches the spreadsheet data and displays it in the table
+        */
+        async function displayReport(excludedKeys, sheets, placeHolderId, includedKeys) {
+            try {
+                // Get the table body element
+                const tableBody = document.getElementById(placeHolderId);
+                // Clear the table body
+                tableBody.innerHTML = '';
+                // Loop through each spreadsheet
+                for (const spreadsheet of sheets) {
+                    // Construct the URL for the spreadsheet data
+                    const url = `https://docs.google.com/spreadsheets/d/${spreadsheet.id}/gviz/tq?tqx=out:csv&range=${spreadsheet.range}`;
+                    // Fetch the spreadsheet data
+                    const response = await fetch(url);
+                    // Check if the response is OK
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    // Get the CSV data from the response
+                    const csvData = await response.text();
+                    // Parse the CSV data into an array of rows
+                    const rows = csvData.split('\n').map((row) => {
+                        const values = [];
+                        let currentValue = '';
+                        let inQuotes = false;
+                        for (let i = 0; i < row.length; i++) {
+                            const char = row[i];
+                            if (char === '"') {
+                                inQuotes = !inQuotes;
+                            } else if (char === ',' && !inQuotes) {
+                                values.push(currentValue);
+                                currentValue = '';
+                            } else {
+                                currentValue += char;
+                            }
+                        }
+                        values.push(currentValue);
+                        return values;
+                    });
+                    // Get the headers from the first row
+                    const headers = rows.shift();
+                    // Convert the rows into objects with header keys
+                    const data = rows.map((row) => {
+                        const obj = {};
+                        headers.forEach((header, index) => {
+                            obj[header] = row[index];
+                        });
+                        return obj;
+                    });
+                    // Append the last row of the spreadsheet
+                    const lastRow = data[data.length - 1];
+                    const lastUpdated = lastRow['Timestamp'];
+                    Object.keys(lastRow).forEach((key) => {
+                        if (((includedKeys.length == 0) &&
+                            !excludedKeys.some((excludedKey) => key.includes(excludedKey))) ||
+                            includedKeys.some((includedKey) => key.includes(includedKey))) {
+                            if (lastRow[key].startsWith('https://drive.google.com')) {
+                                const rowHtml = `
+              <tr>
+                <td>${key}</td>
+                <td><button class="btn" onclick="openModal('${lastRow[key]}')">View Image</button></td>
+                <td>${lastUpdated}</td>
+              </tr>
+            `;
+                                tableBody.innerHTML += rowHtml;
+                            } else if (lastRow[key].startsWith('http')) {
+                                const rowHtml = `
+              <tr>
+                <td>${key}</td>
+                <td><button class="btn btn-primary" onclick="openModal('${lastRow[key]}')">View Image</button></td>
+                <td>${lastUpdated}</td>
+              </tr>
+            `;
+                                tableBody.innerHTML += rowHtml;
+                            } else {
+                                let value = lastRow[key];
+                                let cellClass = '';
+                                
+                                if (key.includes('grams')) {
+                                    value = value.trim();
+                                   
+                                    value = parseFloat(value) / 1000;
+                                    if (isNaN(value)) {
+                                        cellClass = '';
+                                    } else if (value <= 0) {
+                                        cellClass = 'red';
+                                    } else if (value > 0 && value <= 1) {
+                                        cellClass = 'red';
+                                    } else if (value > 1 && value <= 5) {
+                                        cellClass = 'yellow';
+                                    }
+                                } else {
+                                    value = parseFloat(value);
+                                    if (isNaN(value)) {
+                                        cellClass = '';
+                                    } else if (value <= 0) {
+                                        cellClass = 'red';
+                                    } else if (value > 0 && value <= 2) {
+                                        cellClass = 'yellow';
+                                    }
+                                }
+                                const rowHtml = `
+                                <tr>
+                                    <td>${key}</td>
+                                    <td class="${cellClass}">${lastRow[key]}</td>
+                                    <td>${lastUpdated}</td>
+                                </tr>
+                                `;
+                                tableBody.innerHTML += rowHtml;
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error reading spreadsheet:', error);
+            }
+        }
+        /*
+        * Define a function to open the modal window
+        * This function is used to display images in the modal window
+        */
+        function openModal(imageUrl) {
+            window.location.href = imageUrl;
+        }
+        let dailyIncludedKeys = ['Timestamp', 'Daily Checklist', 'Item Filling', 'steel box',
+            'Pudina', 'Nimmakayalu', 'Sprite', 'Name', 'Deep clean'];
+        displayReport([], [spreadsheets[getWorksheetDay()]], 'daily-report-body', dailyIncludedKeys);
+        
+        let eveningReportIncludedKeys = ['Timestamp', 'Daily Checklist', 'American Dry Fruit', 'Pistha',
+            'Black current', 'Blue berry', 'Caramel', 'Mango', 'Oreo', 'Browney',
+            'Berry Blast', 'Vanilla ice creams enni unnay', 'Strawberry ice creams enni unnay', 'Chocolate ice creams enni unnay', 'Butterscotch ice creams enni unnay'];
+        displayReport([], [eveningSpreadsheets[getWorksheetDay()]], 'evening-report-body', eveningReportIncludedKeys);
+        /*
+        * Call the displayReport function to initialize the page
+        * This is done to populate the table with data
+        */
+        let dailyExcludedKeys = ['Timestamp', 'Daily Checklist', 'Item Filling', 'steel box',
+            'Pudina', 'Nimmakayalu', 'Sprite', 'Name', 'Deep clean'];
+        displayReport(dailyExcludedKeys, spreadsheets, 'weekly-report-body', []);
+    </script>
+</body>
+
+</html>
