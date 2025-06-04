@@ -326,7 +326,7 @@
                         return obj;
                     });
                     // Append the last row of the spreadsheet
-                    const lastRow = data[0];
+                    const lastRow = data[data.length-1];
                     const lastUpdated = lastRow['Timestamp'];
                     Object.keys(lastRow).forEach((key) => {
                         if (((includedKeys.length == 0) &&
