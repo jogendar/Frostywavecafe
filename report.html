@@ -326,7 +326,11 @@
                         return obj;
                     });
                     // Append the last row of the spreadsheet
-                    const lastRow = data[data.length-1];
+                    let lastRow = data[data.length-1];
+                    if ( spreadsheet == "1skbQoZ4Msew2f3mNTlmJVrkY-SLVso-v8lgkWB-nUbs" ) //monday spreadsheet has some issue. need to look at 0 index. 
+                    {
+                        lastRow = data[0];
+                    }
                     const lastUpdated = lastRow['Timestamp'];
                     Object.keys(lastRow).forEach((key) => {
                         if (((includedKeys.length == 0) &&
